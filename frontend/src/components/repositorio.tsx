@@ -1,6 +1,6 @@
-import { render } from "@testing-library/react";
 import React, { Component } from "react";
 import axios from 'axios'
+import { ObjectType } from "typescript";
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
@@ -62,6 +62,15 @@ class Repositorio extends Component {
         return list
     }
 
+    updateField(event: any) {
+        const rep = {...this.state.rep}
+        rep.title = event.title.value
+        rep.description = event.description.value
+        rep.link = event.link.value
+        rep.tags = event.tags.value
+        this.setState({ rep })
+    }
+
     renderCards() {
         return this.state.list.map(rep => {
             return <div className="card">
@@ -80,7 +89,6 @@ class Repositorio extends Component {
         return this.renderCards()
     }
 }
-
 
 
 export default Repositorio
