@@ -2,12 +2,14 @@ import { render } from "@testing-library/react";
 import React, { Component } from "react";
 import axios from 'axios'
 
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+
 interface RepositorioProps {
     title: string,
     link: string,
     description: string,
     tags: [],
-    id: number
+    id?: number
 }
 
 const repositorio: RepositorioProps = {
@@ -15,7 +17,7 @@ const repositorio: RepositorioProps = {
     link: '',
     description: '',
     tags: [],
-    id: -1
+    id: undefined
 }
 
 const baseURL:string = 'http://localhost:3000/tools'
@@ -34,6 +36,30 @@ class Repositorio extends Component {
         axios(baseURL).then( resp => {
             this.setState({list: resp.data})
         })
+    }
+
+    save() {
+        const rep = this.state.rep
+        axios.post(baseURL, rep)
+            .then(resp => {
+                const list = this.updateList(resp.data)
+                this.setState({rep: initialState.rep, list})
+                
+            })
+        
+    }
+    remove(rep: RepositorioProps) {
+        axios.delete(`${baseURL}/${rep.id}`)
+        .then(resp => {
+            const list = this.updateList(rep, false)
+            this.setState({list})
+        })
+    }
+
+    updateList(rep: RepositorioProps, add=true) {
+        const list = this.state.list.filter(r => r.id !== rep.id)
+        if(add) list.unshift(rep)
+        return list
     }
 
     renderCards() {
