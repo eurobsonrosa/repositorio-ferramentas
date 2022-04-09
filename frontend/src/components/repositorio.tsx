@@ -15,15 +15,26 @@ const repositorio: RepositorioProps = {
     title: '',
     link: '',
     description: '',
-    tags: [],
+    tags: [''],
     id: undefined
+}
+
+interface SearchProps {
+    search: string,
+    checked: boolean
+}
+
+const search: SearchProps = {
+    search: '',
+    checked: false
 }
 
 const baseURL: string = 'http://localhost:3000/tools'
 
 const initialState = {
     rep: repositorio,
-    list: [{ ...repositorio }]
+    list: [{ ...repositorio }],
+    searchBar: search
 }
 
 
@@ -34,6 +45,7 @@ class Repositorio extends Component {
     componentWillMount() {
         axios(baseURL).then(resp => {
             this.setState({ list: resp.data })
+            console.log(resp.data)
         })
     }
 
@@ -74,13 +86,41 @@ class Repositorio extends Component {
         this.setState({ rep })
     }
 
+    updateSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const searchBar = { ...this.state.searchBar }
+        searchBar.search = event.currentTarget.value
+        this.setState({ searchBar })
+    }
+
+    updateCheck = () => {
+        const searchBar = { ...this.state.searchBar }
+        searchBar.checked = !this.state.searchBar.checked
+        this.setState ({searchBar})        
+    }
+
+    renderSearch() {
+        return <div className="search-bar">
+            <div>
+                <input type="text" name="search" value={this.state.searchBar.search}
+                    onChange={e => this.updateSearch(e)} />
+                <label >
+                    <input type="checkbox" name="checked" checked={this.state.searchBar.checked}
+                        onChange={this.updateCheck} />
+                    search in tags only
+                </label>
+
+            </div>
+            <button>Add Tool</button>
+        </div>
+    }
+
     renderCards() {
-        return this.state.list.map(rep => {
+        return this.state.list.map((rep) => {
             return <div className="card">
                 <a href={rep.link} className="title">{rep.title}</a>
                 <p className="description">{rep.description}</p>
                 <div className="tags">
-                    {rep.tags.map(tag => {
+                   { rep.tags.map(tag => {
                         return <span>#{tag} </span>
                     })}
                 </div>
@@ -88,10 +128,13 @@ class Repositorio extends Component {
         })
     }
 
+    render() {
+        return <div>
+            {this.renderSearch()}
+            {this.renderCards()}
+        </div>
+    }
 
-    //     render() {
-    //         return this.renderForms()
-    //     }
 }
 
 
