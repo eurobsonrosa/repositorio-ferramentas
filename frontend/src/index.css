@@ -1,13 +1,88 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Source Sans Pro', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 600px;
+}
+
+.search-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.card {
+  height: 100px;
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 5px 7px #0000000D;
+  border: 1px solid #EBEAED;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.card a {
+  letter-spacing: 0px;
+  opacity: 1; 
+}
+
+.card .remove {
+  float: right;
+}
+
+.card p {
+  height: 50px;
+  overflow: hidden;
+}
+.form {
+  display: flex;
+  width: 600px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #EBEAED;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.form-title {
+  font-size: 1em;
+}
+
+.form-group {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-group input {
+  background: #F5F4F6 0% 0% no-repeat padding-box;
+  border: 1px solid #EBEAED;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.forms .button {
+  float: right;
+}
+
+@media(max-width: 600px) {
+.main {
+  width: 90vw;
+}
 }
