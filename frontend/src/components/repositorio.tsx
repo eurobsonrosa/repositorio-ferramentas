@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { ObjectType } from "typescript";
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
@@ -8,7 +7,7 @@ interface RepositorioProps {
     title: string,
     link: string,
     description: string,
-    tags: [],
+    tags: string[],
     id?: number
 }
 
@@ -20,54 +19,56 @@ const repositorio: RepositorioProps = {
     id: undefined
 }
 
-const baseURL:string = 'http://localhost:3000/tools'
+const baseURL: string = 'http://localhost:3000/tools'
 
 const initialState = {
     rep: repositorio,
-    list: [{...repositorio}]
+    list: [{ ...repositorio }]
 }
 
 
 class Repositorio extends Component {
 
-    state = {...initialState}
+    state = { ...initialState }
 
     componentWillMount() {
-        axios(baseURL).then( resp => {
-            this.setState({list: resp.data})
+        axios(baseURL).then(resp => {
+            this.setState({ list: resp.data })
         })
     }
 
-    save() {
+    save(e: React.SyntheticEvent) {
+        e.preventDefault()
         const rep = this.state.rep
+        rep.tags = this.state.rep.tags[0].split(" ")
         axios.post(baseURL, rep)
             .then(resp => {
                 const list = this.updateList(resp.data)
-                this.setState({rep: initialState.rep, list})
-                
+                this.setState({ rep: initialState.rep, list })
+
             })
-        
+
     }
     remove(rep: RepositorioProps) {
         axios.delete(`${baseURL}/${rep.id}`)
-        .then(resp => {
-            const list = this.updateList(rep, false)
-            this.setState({list})
-        })
+            .then(resp => {
+                const list = this.updateList(rep, false)
+                this.setState({ list })
+            })
     }
 
-    updateList(rep: RepositorioProps, add=true) {
+    updateList(rep: RepositorioProps, add = true) {
         const list = this.state.list.filter(r => r.id !== rep.id)
-        if(add) list.unshift(rep)
+        if (add) list.unshift(rep)
         return list
     }
 
-    updateField(event: any) {
-        const rep = {...this.state.rep}
-        rep.title = event.title.value
-        rep.description = event.description.value
-        rep.link = event.link.value
-        rep.tags = event.tags.value
+    updateField = (event: React.ChangeEvent<HTMLInputElement>): void => {
+
+        const rep = { ...this.state.rep } as any
+        const target: keyof RepositorioProps = event.target.name as keyof RepositorioProps
+        rep[`${target}`] = event.currentTarget.value
+
         this.setState({ rep })
     }
 
@@ -82,12 +83,13 @@ class Repositorio extends Component {
                     })}
                 </div>
             </div>
-         })
+        })
     }
 
-    render() {
-        return this.renderCards()
-    }
+
+    //     render() {
+    //         return this.renderForms()
+    //     }
 }
 
 
