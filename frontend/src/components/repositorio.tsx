@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from 'axios'
 
+
+
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 interface RepositorioProps {
@@ -90,15 +92,37 @@ class Repositorio extends Component {
         const searchBar = { ...this.state.searchBar }
         searchBar.search = event.currentTarget.value
         this.setState({ searchBar })
+        this.search()
     }
 
     updateCheck = () => {
         const searchBar = { ...this.state.searchBar }
         searchBar.checked = !this.state.searchBar.checked
-        this.setState ({searchBar})        
+        this.setState({ searchBar })
+        this.search()
     }
 
-    renderSearch() {
+    search(){
+        const search = this.state.searchBar.search
+        const checked = this.state.searchBar.checked ? `?tags_like=${search}` : `?q=${search}`
+        if (q === '') {
+            axios.get(baseURL)
+            .then(resp =>{
+                const list = resp.data
+                this.setState({list})
+                this.renderCards()
+            })
+        } else {
+            axios.get(`${baseURL}${checked}`)
+            .then(resp => {
+                const list = resp.data
+                this.setState({list})
+                this.renderCards()
+            })
+        }
+    }
+
+    renderSearchBar() {
         return <div className="search-bar">
             <div>
                 <input type="text" name="search" value={this.state.searchBar.search}
@@ -117,21 +141,29 @@ class Repositorio extends Component {
     renderCards() {
         return this.state.list.map((rep) => {
             return <div className="card">
+                <div>
+                    <button className="remove"
+                        onClick={() => this.remove(rep)}>
+                        Remove
+                    </button>
+                </div>
                 <a href={rep.link} className="title">{rep.title}</a>
                 <p className="description">{rep.description}</p>
                 <div className="tags">
-                   { rep.tags.map(tag => {
+                    {/* { rep.tags.map(tag => {
                         return <span>#{tag} </span>
-                    })}
+                    })} */}
                 </div>
             </div>
         })
+
+         
     }
 
     render() {
-        return <div>
-            {this.renderSearch()}
-            {this.renderCards()}
+        return <div className="main">
+            {this.renderSearchBar()}
+            {this.renderCards()}            
         </div>
     }
 
