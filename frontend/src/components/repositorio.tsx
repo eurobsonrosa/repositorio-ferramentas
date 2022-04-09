@@ -40,7 +40,7 @@ class Repositorio extends Component {
     save(e: React.SyntheticEvent) {
         e.preventDefault()
         const rep = this.state.rep
-        rep.tags = this.state.rep.tags[0].split(" ")
+        rep.tags = rep.tags[0].split(',')
         axios.post(baseURL, rep)
             .then(resp => {
                 const list = this.updateList(resp.data)
@@ -67,7 +67,9 @@ class Repositorio extends Component {
 
         const rep = { ...this.state.rep } as any
         const target: keyof RepositorioProps = event.target.name as keyof RepositorioProps
-        rep[`${target}`] = event.currentTarget.value
+        if (target === "tags") {
+            rep[`${target}`] = event.currentTarget.value.split(' ')
+        } else rep[`${target}`] = event.currentTarget.value
 
         this.setState({ rep })
     }
