@@ -12,21 +12,42 @@ code {
     monospace;
 }
 
-.main {
+button {
+  padding: 5px;
+  border-style: none;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.mainRep {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 600px;
 }
 
+#btn-add-Tool, #btn-close-Tool {
+  float: right;  
+}
+
+#btn-add-Tool {
+  color: #FFFFFF;
+  background: #0DCB7D 0% 0% no-repeat padding-box;
+
+}
+#btn-close-Tool {
+  margin-bottom: 10px;
+  background: #365DF0 0% 0% no-repeat padding-box;
+  color: #FFFFFF;
+}
+
 .search-bar {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .card {
-  height: 100px;
   width: 100%;
   margin: 10px;
   padding: 10px;
@@ -35,6 +56,10 @@ code {
   border: 1px solid #EBEAED;
   border-radius: 5px;
   opacity: 1;
+}
+
+.tags {
+  font-weight: bold;
 }
 
 .card a {
@@ -50,8 +75,17 @@ code {
   height: 50px;
   overflow: hidden;
 }
-.form {
+
+.card .remove {
+  color: #FFFFFF;
+  background: #F95E5A 0% 0% no-repeat padding-box;
+}
+
+.forms {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
   width: 600px;
   background: #FFFFFF 0% 0% no-repeat padding-box;
   border: 1px solid #EBEAED;
@@ -59,8 +93,21 @@ code {
   opacity: 1;
 }
 
+.forms #status {
+  background: #10B26C 0% 0% no-repeat padding-box;
+  display: none;
+  border-radius: 5px;
+  opacity: 1;
+  height: 25px;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  
+}
+
 .form-title {
   font-size: 1em;
+  align-self: flex-start;
 }
 
 .form-group {
@@ -71,14 +118,27 @@ code {
 }
 
 .form-group input {
+  width: 500px;
+  height: 20px;
   background: #F5F4F6 0% 0% no-repeat padding-box;
   border: 1px solid #EBEAED;
   border-radius: 5px;
   opacity: 1;
 }
 
+input.description{
+  height: 50px;
+}
+
 .forms .button {
-  float: right;
+  align-self: flex-end;
+}
+
+.forms .button button {
+  color: #FFFFFF;
+  background: #0DCB7D 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  opacity: 1;
 }
 
 @media(max-width: 600px) {

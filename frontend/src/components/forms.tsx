@@ -6,7 +6,16 @@ export default class Forms extends Repositorio {
     renderForms() {
         return (
             <form className="forms">
-                <h1 className="tittle">Add New Tool</h1>
+
+                <div id="status">
+                    Repository Created
+                    <span id="close-btn"> &times;</span>
+                </div>
+
+                <h1 className="form-title">
+                    <i className="fa-solid fa fa-plus">&nbsp;</i>
+                     Add New Tool
+                </h1>
 
                 <div className="form-group">
                     <label>Tool Name</label>
@@ -26,7 +35,7 @@ export default class Forms extends Repositorio {
 
                 <div className="form-group">
                     <label>Description</label>
-                    <input type="text" className="form-control"
+                    <input type="text" className="form-control description"
                         name="description"
                         value={this.state.rep.description}
                         onChange={e => this.updateField(e)} />
@@ -42,7 +51,7 @@ export default class Forms extends Repositorio {
 
                 <div className="button">
                     <button
-                    onClick={e => this.save(e)}>Add Tool</button>
+                        onClick={e => this.save(e)}>Save</button>
                 </div>
             </form>
         )

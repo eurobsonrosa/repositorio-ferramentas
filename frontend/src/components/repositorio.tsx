@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios'
 
-
-
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 interface RepositorioProps {
@@ -59,10 +57,14 @@ class Repositorio extends Component {
             .then(resp => {
                 const list = this.updateList(resp.data)
                 this.setState({ rep: initialState.rep, list })
-
+                if (resp.status === 201) {
+                    const elem = document.getElementById('status')
+                    if (elem) elem.style.display = 'block'
+                    setTimeout(() => { if (elem) elem.style.display = 'none' }, 4000)
+                }
             })
-
     }
+
     remove(rep: RepositorioProps) {
         axios.delete(`${baseURL}/${rep.id}`)
             .then(resp => {
@@ -102,23 +104,23 @@ class Repositorio extends Component {
         this.search()
     }
 
-    search(){
+    search() {
         const search = this.state.searchBar.search
         const checked = this.state.searchBar.checked ? `?tags_like=${search}` : `?q=${search}`
-        if (q === '') {
+        if (search === '') {
             axios.get(baseURL)
-            .then(resp =>{
-                const list = resp.data
-                this.setState({list})
-                this.renderCards()
-            })
+                .then(resp => {
+                    const list = resp.data
+                    this.setState({ list })
+                    this.renderCards()
+                })
         } else {
             axios.get(`${baseURL}${checked}`)
-            .then(resp => {
-                const list = resp.data
-                this.setState({list})
-                this.renderCards()
-            })
+                .then(resp => {
+                    const list = resp.data
+                    this.setState({ list })
+                    this.renderCards()
+                })
         }
     }
 
@@ -132,9 +134,7 @@ class Repositorio extends Component {
                         onChange={this.updateCheck} />
                     search in tags only
                 </label>
-
             </div>
-            <button>Add Tool</button>
         </div>
     }
 
@@ -150,20 +150,20 @@ class Repositorio extends Component {
                 <a href={rep.link} className="title">{rep.title}</a>
                 <p className="description">{rep.description}</p>
                 <div className="tags">
-                    {/* { rep.tags.map(tag => {
+                    {rep.tags.map(tag => {
                         return <span>#{tag} </span>
-                    })} */}
+                    })}
                 </div>
             </div>
         })
 
-         
+
     }
 
     render() {
-        return <div className="main">
+        return <div className="mainRep">
             {this.renderSearchBar()}
-            {this.renderCards()}            
+            {this.renderCards()}
         </div>
     }
 
